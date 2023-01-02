@@ -1,40 +1,89 @@
-name: Deploy Flask App
+name: Deploy for Develop
+
 
 on:
   push:
     branches:
-      - main
+    - main
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   deploy:
-    name: deploy to aws
-    runs-on: ubuntu-latest
-    environment:
-      name: Production
-      url: https://test.com
+    # The type of runner that the job will run on
+    runs-on: ubuntu-20.04
+
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [ 15.5.0 ]
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+
     - name: Install Dependencies
       run: npm install
 
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v2
       with:
         python-version: '3.9'
 
+    - name: Install serverless CLI
+      run: npm install -g serverless
 
-    - name: serverless deploy --stage dev
-      uses: serverless/github-action@v3.1
+    - name: serverless configuration
+      run: |
+        serverless config credentials --provider aws --key ${{secrets.AWS_ACCESS_KEY_ID_DEV}} --secret ${{secrets.AWS_SECRET_ACCESS_KEY_DEV}}
+    - name: Serverless Deploy
+      run: |
+        sls deploy --config serverless.yml --stage dev
+
+
+
+
+
+
+# name: Deploy Flask App
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     name: deploy to aws
+#     runs-on: ubuntu-latest
+#     environment:
+#       name: Production
+#       url: https://test.com
+#     strategy:
+#       matrix:
+#         node-version: [16.x]
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: Use Node.js ${{ matrix.node-version }}
+#       uses: actions/setup-node@v3
+#       with:
+#         node-version: ${{ matrix.node-version }}
+#     - name: Install Dependencies
+#       run: npm install
+
+#     - name: Set up Python
+#       uses: actions/setup-python@v3
+#       with:
+#         python-version: '3.9'
+
+
+#     - name: serverless deploy --stage dev
+#       uses: serverless/github-action@v3.1
       
-      env:
-        # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-        # or if using AWS credentials directly
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#       env:
+#         # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+#         # or if using AWS credentials directly
+#         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
