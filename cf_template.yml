@@ -1,0 +1,103 @@
+Resources:
+  LashicUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: True
+      UsernameConfiguration:
+        CaseSensitive: True
+      UserPoolName: !Sub ${AWS::StackName}-UserPool
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: False
+          RequireNumbers: True
+          RequireSymbols: True
+          RequireUppercase: False
+          TemporaryPasswordValidityDays: 2
+      Schema:
+      - Name: lashic_user_id
+        AttributeDataType: String
+        Mutable: True
+        # Required: True
+        StringAttributeConstraints:
+          MaxLength: 50
+          MinLength: 1
+
+  BizUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      AccessTokenValidity: 1
+      IdTokenValidity: 1
+      ClientName: "Biz"
+      EnableTokenRevocation: True
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      GenerateSecret: False
+      RefreshTokenValidity: 7
+      SupportedIdentityProviders:
+        - COGNITO
+      TokenValidityUnits:
+        AccessToken: days
+        IdToken: days
+        RefreshToken: days
+      CallbackURLs:
+        - http://localhost:5000/callback
+      LogoutURLs:
+        - http://localhost:5000/logout
+      UserPoolId:
+        Ref: LashicUserPool
+
+  OfficeUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      AccessTokenValidity: 1
+      IdTokenValidity: 1
+      ClientName: "Office"
+      EnableTokenRevocation: True
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      GenerateSecret: False
+      RefreshTokenValidity: 7
+      SupportedIdentityProviders:
+        - COGNITO
+      TokenValidityUnits:
+        AccessToken: days
+        IdToken: days
+        RefreshToken: days
+      CallbackURLs:
+        - http://localhost:5000/callback
+      LogoutURLs:
+        - http://localhost:5000/logout
+      UserPoolId:
+        Ref: LashicUserPool
+
+  MSUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      AccessTokenValidity: 1
+      IdTokenValidity: 1
+      ClientName: "MS"
+      EnableTokenRevocation: True
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      GenerateSecret: False
+      RefreshTokenValidity: 7
+      SupportedIdentityProviders:
+        - COGNITO
+      TokenValidityUnits:
+        AccessToken: days
+        IdToken: days
+        RefreshToken: days
+      CallbackURLs:
+        - http://localhost:5000/callback
+      LogoutURLs:
+        - http://localhost:5000/logout
+      UserPoolId:
+        Ref: LashicUserPool
+
+
+
