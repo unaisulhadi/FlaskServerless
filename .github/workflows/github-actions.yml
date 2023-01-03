@@ -19,6 +19,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
+    - run:
+          name: serverless python plugin
+          command: serverless plugin install -n serverless-python-requirements
     - name: serverless deploy
       uses: serverless/github-action@v3.1
       with:
