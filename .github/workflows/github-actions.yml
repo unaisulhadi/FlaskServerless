@@ -11,7 +11,7 @@ jobs:
   deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-20.04
-    environment: Production
+
     strategy:
       matrix:
         node-version: [ 15.5.0 ]
@@ -36,15 +36,8 @@ jobs:
       run: npm install -g serverless
 
     - name: serverless configuration
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
-        echo $AWS_ACCESS_KEY_ID
-        echo $AWS_SECRET_ACCESS_KEY
-        echo $Test
-        echo '$Test'
-        serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY}}
+        serverless config credentials --provider aws --key ${{secrets.AWS_ACCESS_KEY_ID_DEV}} --secret ${{secrets.AWS_SECRET_ACCESS_KEY_DEV}}
       
     - name: Serverless Deploy
       run: serverless deploy --config serverless.yml
