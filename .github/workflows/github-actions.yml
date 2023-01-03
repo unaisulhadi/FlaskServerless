@@ -8,6 +8,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  build:
+    environment: Production
   deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-20.04
@@ -41,84 +43,3 @@ jobs:
       
     - name: Serverless Deploy
       run: serverless deploy --config serverless.yml
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# name: Deploy main branch
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   deploy:
-#     name: deploy
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         node-version: [16.x]
-#     steps:
-#     - uses: actions/checkout@v3
-#     - name: Use Node.js ${{ matrix.node-version }}
-#       uses: actions/setup-node@v3
-#       with:
-#         node-version: ${{ matrix.node-version }}
-#     - name: Set up Python
-#       uses: actions/setup-python@v3
-#       with:
-#         python-version: '3.8'
-#     - run: npm ci
-#     - name: serverless deploy
-#       uses: serverless/github-action@v3.1
-#       with:
-#         args: deploy
-#       env:
-#         # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-#         # or if using AWS credentials directly
-#         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
