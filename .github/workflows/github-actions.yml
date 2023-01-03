@@ -40,7 +40,7 @@ jobs:
         serverless config credentials --key ${{secrets.AWS_ACCESS_KEY_ID}} --secret ${{secrets.AWS_SECRET_ACCESS_KEY}}
       
     - name: Serverless Deploy
-      run: serverless deploy --config serverless.yml --stage dev
+      run: serverless deploy --config serverless.yml
         
 
 
