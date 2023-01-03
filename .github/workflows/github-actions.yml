@@ -42,6 +42,8 @@ jobs:
       run: |
         echo $AWS_ACCESS_KEY_ID
         echo $AWS_SECRET_ACCESS_KEY
+        echo $Test
+        echo '$Test'
         serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY}}
       
     - name: Serverless Deploy
