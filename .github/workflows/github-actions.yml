@@ -35,12 +35,16 @@ jobs:
     - name: Install serverless CLI
       run: npm install -g serverless
 
-    - name: serverless configuration
-      run: |
-        serverless config credentials --key ${{secrets.AWS_ACCESS_KEY_ID}} --secret ${{secrets.AWS_SECRET_ACCESS_KEY}}
+    # - name: serverless configuration
+    #   run: |
+    #     serverless config credentials --key ${{secrets.AWS_ACCESS_KEY_ID}} --secret ${{secrets.AWS_SECRET_ACCESS_KEY}}
     - name: Serverless Deploy
       run: serverless deploy --config serverless.yml --stage dev
-        
+      env:
+        # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+        # or if using AWS credentials directly
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 
 
